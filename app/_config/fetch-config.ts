@@ -18,7 +18,8 @@ const _FETCH = async <T extends any>(url: string, options?: Options): Promise<Ba
       "Content-Type": "application/json",
       Accept: "application/json",
       ...options?.headers
-    }
+    },
+    credentials: "include"
   } as Options
 
   //@ts-ignore
