@@ -6,21 +6,51 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "beautify": "prettier --write ."
   },
   "dependencies": {
+    "@nextui-org/react": "^2.4.6",
+    "@tanstack/react-query": "^5.51.15",
+    "@tanstack/react-query-devtools": "^5.51.15",
+    "axios": "^1.7.2",
+    "framer-motion": "^11.3.17",
+    "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.416.0",
+    "moment-timezone": "^0.5.45",
+    "next": "14.2.5",
+    "next-safe-action": "^7.4.2",
+    "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.5"
+    "react-file-icon": "^1.5.0",
+    "react-markdown": "^9.0.1",
+    "sharp": "^0.33.4",
+    "sonner": "^1.5.0",
+    "tailwind-merge": "^2.4.0",
+    "use-debounce": "^10.0.1",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@tailwindcss/typography": "^0.5.13",
+    "@tanstack/eslint-plugin-query": "^5.51.15",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "@types/react-file-icon": "^1.0.4",
     "eslint": "^8",
-    "eslint-config-next": "14.2.5"
+    "eslint-config-next": "14.2.5",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-tailwindcss": "^3.17.4",
+    "postcss": "^8",
+    "prettier": "^3.3.3",
+    "prettier-plugin-organize-imports": "^4.0.0",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "tailwind-scrollbar": "^3.1.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }
