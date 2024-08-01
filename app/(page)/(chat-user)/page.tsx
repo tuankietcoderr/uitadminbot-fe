@@ -50,7 +50,7 @@ const page = () => {
   return (
     <ChatContextProvider>
       <div className='flex h-full flex-col'>
-        <div className='flex w-full flex-1 overflow-hidden p-4 md:p-0' id='messages-area'>
+        <div className='flex w-full flex-1 overflow-hidden md:p-0' id='messages-area'>
           {hasLoading ? (
             <Spinner className='m-auto' size='lg' />
           ) : hasSuccess ? (

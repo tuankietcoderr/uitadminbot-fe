@@ -5,6 +5,7 @@ import { Admin } from "@/_lib/types/schema"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { PropsWithChildren } from "react"
+import AdminSidebar from "./_components/AdminSidebar"
 
 const layout = async ({ children }: PropsWithChildren) => {
   const cookieData = cookies()
@@ -16,8 +17,6 @@ const layout = async ({ children }: PropsWithChildren) => {
 
   const res = await FETCH.get<Admin>(API.AUTH.ME, {
     cookies
-  }).catch(() => {
-    redirect(APP_ROUTES.AUTH.LOGIN)
   })
 
   if (!res.success) {
@@ -30,7 +29,12 @@ const layout = async ({ children }: PropsWithChildren) => {
     redirect(APP_ROUTES.AUTH.LOGIN)
   }
 
-  return children
+  return (
+    <div className='flex max-h-screen min-h-screen'>
+      <AdminSidebar user={user} />
+      <div className='flex-1 overflow-auto p-8 md:px-12'>{children}</div>
+    </div>
+  )
 }
 
 export default layout

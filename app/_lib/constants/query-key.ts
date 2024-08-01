@@ -5,5 +5,8 @@ export const QUERY_KEY = {
   ROOM: {
     GET_CHAT_USER: "room.getChatUser",
     GET_MESSAGES: "room.getMessages"
+  },
+  ASSET: {
+    GET_ALL: "asset.getAll"
   }
 }

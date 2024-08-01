@@ -134,9 +134,9 @@ const Answer = ({
           <Markdown>{content}</Markdown>
         </div>
         <Divider />
-        <div className='flex items-center justify-between gap-4'>
+        <div className='flex flex-wrap items-center justify-between gap-4'>
           <div className='flex items-center gap-4'>
-            <p>Bạn có hài lòng với câu trả lời này không?</p>
+            <p className='flex-1'>Bạn có hài lòng với câu trả lời này không?</p>
             <div className='space-x-2'>
               <Button
                 size='sm'
@@ -158,7 +158,7 @@ const Answer = ({
               </Button>
             </div>
           </div>
-          <Button variant='light'>Phản hồi</Button>
+          <Button variant='bordered'>Phản hồi</Button>
         </div>
       </div>
     </div>

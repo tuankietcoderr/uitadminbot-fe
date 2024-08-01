@@ -1,5 +1,5 @@
 "use client"
-import { COOKIES_KEY } from "@/_lib/constants"
+import { APP_ROUTES, COOKIES_KEY } from "@/_lib/constants"
 import { timezoneDate } from "@/_lib/utils"
 import { authService } from "@/_services/auth"
 import { Button, Input } from "@nextui-org/react"
@@ -20,6 +20,8 @@ const LoginForm = () => {
       expires: timezoneDate(data.refreshTokenExpiration),
       secure: process.env.NODE_ENV === "production"
     })
+
+    window.location.href = APP_ROUTES.ADMIN.ROOT
   }
 
   return (

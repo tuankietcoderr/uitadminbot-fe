@@ -18,10 +18,10 @@ const ChatList = ({ roomId }: Props) => {
 
   useEffect(() => {
     setMessages(_messages)
-  }, [_messages])
+  }, [_messages, setMessages])
 
   return (
-    <div className='flex size-full max-h-full justify-center overflow-auto'>
+    <div className='flex size-full max-h-full justify-center overflow-auto p-4'>
       <div className='w-full max-w-3xl space-y-4 pt-40'>
         {isLoading ? (
           <div className='flex flex-col items-center justify-center gap-2'>

@@ -124,7 +124,7 @@ const ChatArea = ({ roomId }: Props) => {
       <div className='flex justify-center'>
         <input
           type='file'
-          accept='.jpg,.jpeg,.png,.gif,.bmp,.tiff,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.odt,.rtf'
+          accept='.jpg,.jpeg,.png,.pdf,.xls,.xlsx'
           ref={pickImageRef}
           onChange={onPickImage}
           className='hidden'

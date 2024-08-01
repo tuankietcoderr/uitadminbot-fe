@@ -5,6 +5,6 @@ export interface IPaginate {
   hasPrevPage?: boolean
   nextPage?: number | null
   prevPage?: number | null
-  total?: number
-  offset?: number
+  totalPages?: number
+  totalDocuments?: number
 }

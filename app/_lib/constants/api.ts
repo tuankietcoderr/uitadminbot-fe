@@ -25,5 +25,8 @@ export const API = {
   UPLOADER: {
     UPLOAD: "/upload",
     DELETE: (fileId: string) => `/upload?public_id=${fileId}`
+  },
+  ASSET: {
+    GET_ALL: "/asset"
   }
 }
