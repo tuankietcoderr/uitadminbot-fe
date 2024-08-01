@@ -2,13 +2,13 @@ import { apiClient } from "@/_config"
 import { API } from "@/_lib/constants"
 import { BaseResponse } from "@/_lib/types"
 import { Admin } from "@/_lib/types/schema"
-import { LoginResponseDto, RegisterChatUserResponseDto } from "./auth.dto"
+import { LoginRequestDto, LoginResponseDto, RegisterChatUserResponseDto } from "./auth.dto"
 
 export const authService = {
   refreshToken: async (refreshToken: string) => {
     return await apiClient.post(API.AUTH.REFRESH_TOKEN, { refreshToken })
   },
-  login: async (data: { email: string; password: string }) => {
+  login: async (data: LoginRequestDto) => {
     return await apiClient.post<BaseResponse<LoginResponseDto>>(API.AUTH.LOGIN, data)
   },
   registerChatUser: async () => {

@@ -1,5 +1,10 @@
 import { Admin, ChatUser } from "@/_lib/types/schema"
 
+export type LoginRequestDto = {
+  email: string
+  password: string
+}
+
 export type LoginResponseDto = {
   accessToken: string
   refreshToken: string
