@@ -30,8 +30,10 @@ const LoginForm = () => {
   const [error, setError] = useState<string | null>(null)
 
   const loginMutation = useLoginMutation()
+  const isLoading = loginMutation.isPending
 
   const handleLogin = async (formData: FormSchema) => {
+    setError(null)
     loginMutation.mutate(formData, {
       onSuccess: ({ data }) => {
         Cookies.set(COOKIES_KEY.ACCESS_TOKEN, data.accessToken, {
@@ -74,6 +76,7 @@ const LoginForm = () => {
           autoFocus
           isInvalid={!!errors.email}
           errorMessage={errors.email?.message}
+          isDisabled={isLoading}
         />
         <PasswordInput
           {...register("password")}
@@ -83,10 +86,11 @@ const LoginForm = () => {
           isRequired
           isInvalid={!!errors.password}
           errorMessage={errors.password?.message}
+          isDisabled={isLoading}
         />
         {error && <p className='w-full text-left text-danger'>{error}</p>}
-        <Button variant='solid' color='primary' fullWidth type='submit'>
-          Đăng nhập
+        <Button variant='solid' color='primary' fullWidth type='submit' isLoading={isLoading} isDisabled={isLoading}>
+          {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
         </Button>
       </form>
     </div>
