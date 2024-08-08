@@ -7,7 +7,7 @@ type Props = {}
 
 const ChatUserTopBar = ({}: Props) => {
   return (
-    <header className='fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-8 border-b-1 border-gray-100 bg-white/50 bg-clip-padding px-[5%] py-4 backdrop-blur-lg dark:border-gray-700 dark:bg-slate-700/50'>
+    <header className='flex items-center justify-between gap-8 border-b-1 border-gray-100 bg-white/50 bg-clip-padding p-4 backdrop-blur-lg dark:border-gray-700 dark:bg-slate-700/50'>
       <AppLogo />
       <div className='flex items-center gap-4'>
         <Button radius='full' as={Link} href={APP_ROUTES.ADMIN.ROOT} color='primary'>

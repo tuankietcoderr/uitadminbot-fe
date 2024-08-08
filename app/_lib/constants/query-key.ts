@@ -8,5 +8,9 @@ export const QUERY_KEY = {
   },
   ASSET: {
     GET_ALL: "asset.getAll"
+  },
+  SHARE: {
+    GET_SHARED_ROOM: "share.getSharedRoom",
+    GET_OWNER_SHARES: "share.getOwnerShares"
   }
 }

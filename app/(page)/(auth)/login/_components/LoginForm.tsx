@@ -6,6 +6,7 @@ import { useLoginMutation } from "@/_services/auth"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Input } from "@nextui-org/react"
 import Cookies from "js-cookie"
+import Link from "next/link"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -92,6 +93,12 @@ const LoginForm = () => {
         <Button variant='solid' color='primary' fullWidth type='submit' isLoading={isLoading} isDisabled={isLoading}>
           {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
         </Button>
+        <Link
+          href={APP_ROUTES.ROOT}
+          className='text-center text-sm text-foreground-400 transition-all hover:text-primary hover:underline'
+        >
+          Quay lại trang chủ
+        </Link>
       </form>
     </div>
   )

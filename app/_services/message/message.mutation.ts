@@ -6,7 +6,6 @@ export const useSendMessageMutation = (signal?: AbortSignal) => {
   return useMutation({
     mutationFn: async (data: SendMessageDto) => {
       const res = await messageService.sendMessage(data, signal)
-
       return res.data
     }
   })

@@ -10,7 +10,7 @@ type ChatContextType = {
   setContent: (content: string) => void
   sendMessage: (data: SendMessageDto) => void
   hasContent: boolean
-  inputRef?: React.RefObject<HTMLInputElement>
+  inputRef?: React.RefObject<HTMLTextAreaElement>
   abortResponse: () => void
   isSending: boolean
   nativeScrollToBottom: () => void
@@ -28,7 +28,7 @@ export const useChatContext = () => {
 }
 
 export const ChatContextProvider = ({ children }: PropsWithChildren) => {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
   const [content, setContent] = useState<string>("")
   const { messages, setMessages } = useMessageStore()
   const hasContent = !!content.trim().length
@@ -55,40 +55,45 @@ export const ChatContextProvider = ({ children }: PropsWithChildren) => {
     scrollToBottom()
   }, [scrollToBottom])
 
-  const sendMessage = (data: SendMessageDto) => {
-    if (!hasContent) return
+  const sendMessage = useCallback(
+    (data: SendMessageDto) => {
+      if (!hasContent) return
+      if (isSending) return
 
-    setContent("")
-    fromSendingMessageRef.current = true
+      setContent("")
+      fromSendingMessageRef.current = true
 
-    const prevState = messages
+      const prevState = messages
 
-    setMessages([
-      ...prevState,
-      {
-        ...data,
-        _id: crypto.randomUUID()
-      }
-    ])
-
-    sendMessageMutation.mutate(data, {
-      onSuccess: ({ data }) => {
-        fromSendingMessageRef.current = true
-        inputRef.current?.focus()
-        setMessages([...prevState, data])
-      },
-      onError: (err: any) => {
-        setMessages(prevState)
-        if (err instanceof CanceledError) {
-          return
+      setMessages([
+        ...prevState,
+        {
+          ...data,
+          _id: crypto.randomUUID()
         }
-        inputRef.current?.focus()
-        toast.error("Có lỗi xảy ra khi gửi tin nhắn", {
-          description: err.response?.data?.message ?? err.message
-        })
-      }
-    })
-  }
+      ])
+
+      sendMessageMutation.mutate(data, {
+        onSuccess: ({ data }) => {
+          fromSendingMessageRef.current = true
+          inputRef.current?.focus()
+          setMessages([...prevState, data])
+        },
+        onError: (err: any) => {
+          console.log(err)
+          setMessages(prevState)
+          if (err instanceof CanceledError) {
+            return
+          }
+          inputRef.current?.focus()
+          toast.error("Có lỗi xảy ra khi gửi tin nhắn", {
+            description: err.response?.data?.message ?? err.message
+          })
+        }
+      })
+    },
+    [hasContent, isSending, messages, sendMessageMutation, setMessages]
+  )
 
   const abortResponse = () => {
     console.log("aborting...")

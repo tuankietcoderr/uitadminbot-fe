@@ -1,5 +1,4 @@
 "use client"
-import { ChatContextProvider } from "@/_context"
 import { COOKIES_KEY } from "@/_lib/constants"
 import { timezoneDate } from "@/_lib/utils"
 import { useCreateChatUserMutation, useGetMeQuery } from "@/_services/auth"
@@ -22,7 +21,6 @@ const page = () => {
     if (isError) {
       createChatUserMutation.mutate(undefined, {
         onSuccess: ({ data }) => {
-          console.log(timezoneDate(data.accessTokenExpiration))
           Cookies.set(COOKIES_KEY.ACCESS_TOKEN, data.accessToken, {
             expires: timezoneDate(data.accessTokenExpiration),
             secure: process.env.NODE_ENV === "production"
@@ -48,20 +46,12 @@ const page = () => {
   const hasLoading = isLoading || getUserChatRoomQuery.isLoading || createChatUserMutation.isPending
 
   return (
-    <ChatContextProvider>
-      <div className='flex h-full flex-col'>
-        <div className='flex w-full flex-1 overflow-hidden md:p-0' id='messages-area'>
-          {hasLoading ? (
-            <Spinner className='m-auto' size='lg' />
-          ) : hasSuccess ? (
-            <ChatList roomId={room?._id!} />
-          ) : hasError ? (
-            <div>Có lỗi xảy ra</div>
-          ) : null}
-        </div>
-        <ChatArea roomId={room?._id!} />
+    <div className='flex h-full flex-col'>
+      <div className='flex w-full flex-1 overflow-auto md:p-0' id='messages-area'>
+        {hasLoading ? <Spinner className='m-auto' size='lg' /> : hasSuccess ? <ChatList roomId={room?._id!} /> : null}
       </div>
-    </ChatContextProvider>
+      <ChatArea roomId={room?._id!} />
+    </div>
   )
 }
 

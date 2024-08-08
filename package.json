@@ -10,11 +10,14 @@
     "beautify": "prettier --write ."
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
     "@hookform/resolvers": "^3.9.0",
     "@nextui-org/react": "^2.4.6",
     "@tanstack/react-query": "^5.51.15",
     "@tanstack/react-query-devtools": "^5.51.15",
     "axios": "^1.7.2",
+    "emoji-mart": "^5.6.0",
     "framer-motion": "^11.3.17",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
@@ -29,6 +32,7 @@
     "react-file-icon": "^1.5.0",
     "react-hook-form": "^7.52.1",
     "react-markdown": "^9.0.1",
+    "react-type-animation": "^3.2.0",
     "recharts": "^2.12.7",
     "sharp": "^0.33.4",
     "sonner": "^1.5.0",

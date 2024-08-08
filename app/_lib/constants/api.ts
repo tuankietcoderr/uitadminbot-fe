@@ -24,9 +24,19 @@ export const API = {
   },
   UPLOADER: {
     UPLOAD: "/upload",
+    ADMIN_UPLOAD: "/upload/train",
+    UPLOAD_LINK: "/upload/link",
+    DELETE_LINK: (public_id: string) => `/upload/link?public_id=${public_id}`,
+    ADMIN_DELETE: (fileId: string) => `/upload/train?public_id=${fileId}`,
     DELETE: (fileId: string) => `/upload?public_id=${fileId}`
   },
   ASSET: {
     GET_ALL: "/asset"
+  },
+  SHARE: {
+    CREATE: "/share",
+    GET_SHARED_ROOM: (link: string) => `/share/${link}`,
+    CANCEL_SHARE: (link: string) => `/share/${link}`,
+    GET_USER_SHARES: "/share"
   }
 }

@@ -2,9 +2,9 @@
 
 import { Asset } from "@/_lib/types/schema"
 import { formatDate } from "@/_lib/utils"
-import { useDeleteUploadMutation } from "@/_services/upload"
+import { useDeleteLinkMutation, useDeleteUploadMutation } from "@/_services/upload"
 import { Button, Link, Popover, PopoverContent, PopoverTrigger } from "@nextui-org/react"
-import { ArrowDownToLine, Trash2 } from "lucide-react"
+import { ArrowDownToLine, ExternalLink, Trash2 } from "lucide-react"
 import { Key, useState } from "react"
 import { toast } from "sonner"
 import { AssetColumnKey } from "../_mock/assetColumn.mock"
@@ -19,7 +19,9 @@ const RenderCellAsset = ({ asset, columnKey, onDeleteCell }: Props) => {
   const cellValue = asset[columnKey as keyof Asset]
   const [showPopover, setShowPopover] = useState(false)
 
-  const deleteAssetMutation = useDeleteUploadMutation()
+  const isLink = asset.assetType === "link"
+
+  const deleteAssetMutation = isLink ? useDeleteUploadMutation(true) : useDeleteLinkMutation()
   const isLoading = deleteAssetMutation.isPending
 
   const handleDelete = () => {
@@ -58,9 +60,15 @@ const RenderCellAsset = ({ asset, columnKey, onDeleteCell }: Props) => {
             target='_blank'
             href={asset.url}
           >
-            <ArrowDownToLine size={20} />
+            {isLink ? <ExternalLink size={20} /> : <ArrowDownToLine size={20} />}
           </Button>
-          <Popover placement='right' isOpen={showPopover} onOpenChange={setShowPopover} showArrow>
+          <Popover
+            placement='right'
+            isOpen={showPopover}
+            onOpenChange={setShowPopover}
+            showArrow
+            isDismissable={!isLoading}
+          >
             <PopoverTrigger>
               <Button isIconOnly variant='light' color='danger' size='sm'>
                 <Trash2 size={20} />

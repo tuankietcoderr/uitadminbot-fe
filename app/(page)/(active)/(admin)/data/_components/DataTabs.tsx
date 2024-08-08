@@ -13,14 +13,14 @@ const tabs = [
     title: "Tài liệu Excel",
     _key: "excel"
   },
+  // {
+  //   title: "Hình ảnh",
+  //   _key: "image"
+  // },
   {
-    title: "Hình ảnh",
-    _key: "image"
+    title: "Liên kết",
+    _key: "link"
   }
-  //   {
-  //     title: "Liên kết",
-  //     _key: "link"
-  //   }
 ] as {
   title: string
   _key: string

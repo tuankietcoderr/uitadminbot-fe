@@ -3,7 +3,7 @@ import { Nunito } from "next/font/google"
 import "./globals.css"
 import Providers from "./providers"
 
-const nunito = Nunito({ subsets: ["vietnamese"] })
+const nunito = Nunito({ subsets: ["vietnamese"], preload: true, fallback: ["sans-serif"] })
 
 export const metadata: Metadata = {
   title: "UITAdminBot",

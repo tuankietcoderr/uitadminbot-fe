@@ -1,16 +1,22 @@
 "use client"
-import { CustomTable } from "@/_components"
+import { CustomTable, ScreenLoader } from "@/_components"
 import { IPaginate } from "@/_lib/interfaces"
 import { Asset } from "@/_lib/types/schema"
 import { assetService } from "@/_services/asset"
 import { useUploadMutation } from "@/_services/upload"
-import { Spinner } from "@nextui-org/react"
+import { Progress, Spinner } from "@nextui-org/react"
+import dynamic from "next/dynamic"
 import { useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import { useDebounce } from "use-debounce"
-import { assetColumns } from "../_mock/assetColumn.mock"
+import { AssetColumnKey, assetColumns } from "../_mock/assetColumn.mock"
 import RenderCellAsset from "./RenderCellData"
+
+const CreateLinkModal = dynamic(() => import("./CreateLinkModal"), {
+  ssr: false,
+  loading: () => <ScreenLoader />
+})
 
 const AssetListData = () => {
   const [assets, setAssets] = useState<Asset[]>([])
@@ -22,11 +28,14 @@ const AssetListData = () => {
 
   const searchParams = useSearchParams()
   const type = searchParams.get("selected_tab") || "pdf"
+  const isLink = type === "link"
   const [isFetching, setIsFetching] = useState(false)
   const [keyword, setKeyword] = useState("")
   const [debouncedKeyword] = useDebounce(keyword, 500)
+  const [showModal, setShowModal] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
-  const uploadMutation = useUploadMutation()
+  const uploadMutation = useUploadMutation(setUploadProgress, true)
   const isUploading = uploadMutation.isPending
 
   const fetchNext = useCallback(
@@ -67,7 +76,11 @@ const AssetListData = () => {
     if (!file) return
 
     toast.loading("Đang tải lên tệp tin", {
-      duration: Infinity
+      duration: Infinity,
+      description: <Progress value={uploadProgress} className='w-full' showValueLabel />,
+      classNames: {
+        content: "w-full"
+      }
     })
     uploadMutation.mutate(file, {
       onSuccess: ({ data }) => {
@@ -85,13 +98,18 @@ const AssetListData = () => {
   }
 
   const onClickCreate = () => {
+    if (isLink) {
+      setShowModal(true)
+      return
+    }
     pickFileRef.current?.click()
   }
   return (
     <>
       <input
         type='file'
-        accept='.jpg,.jpeg,.png,.pdf,.xls,.xlsx'
+        accept='.pdf,.xls,.xlsx'
+        // accept='.jpg,.jpeg,.png,.pdf,.xls,.xlsx'
         ref={pickFileRef}
         onChange={onPickImage}
         className='hidden'
@@ -104,13 +122,13 @@ const AssetListData = () => {
         RenderCell={(asset, columnKey) => (
           <RenderCellAsset asset={asset} columnKey={columnKey} onDeleteCell={onDeleteCell} />
         )}
-        searchKeys={["name"]}
+        searchKeys={["name"] as AssetColumnKey[]}
         searchPlaceholder='Tìm kiếm tệp tin'
         onClickCreate={onClickCreate}
-        createText='Tải lên tệp mới'
+        createText={`Tải lên ${isLink ? "liên kết" : "tệp"} mới`}
         showExport={false}
         bodyProps={{
-          emptyContent: "Không tìm thấy tệp tin nào",
+          emptyContent: `Không tìm thấy ${isLink ? "liên kết" : "tệp tin"} nào`,
           isLoading: isFetching,
           loadingContent: <Spinner />
         }}
@@ -124,6 +142,15 @@ const AssetListData = () => {
           onChangeKeyword
         }}
       />
+      {showModal && (
+        <CreateLinkModal
+          visible={showModal}
+          onClose={() => {
+            setShowModal(false)
+          }}
+          onCreated={() => fetchNext(1)}
+        />
+      )}
     </>
   )
 }

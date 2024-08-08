@@ -276,7 +276,11 @@ const CustomTable = <T = any,>(props: CustomTableProps<T>) => {
 
   return (
     <Table
+      radius='sm'
       isStriped
+      classNames={{
+        wrapper: "min-h-[400px]"
+      }}
       {...props}
       selectionMode={showCheckbox ? "multiple" : "none"}
       topContent={props.topContent ? props.topContent : renderTopContent()}

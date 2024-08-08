@@ -2,12 +2,20 @@ import { useChatContext } from "@/_context"
 import { EContentType } from "@/_lib/enums"
 import { useDeleteUploadMutation, useUploadMutation } from "@/_services/upload"
 import { UploadResponseDto } from "@/_services/upload/upload.dto"
-import { Button, CircularProgress, Input } from "@nextui-org/react"
-import { Paperclip, Pause, SendHorizonal, X } from "lucide-react"
+import data from "@emoji-mart/data"
+import { Button, CircularProgress, Popover, PopoverContent, PopoverTrigger, Spinner, Textarea } from "@nextui-org/react"
+import { Paperclip, SendHorizonal, Smile, X } from "lucide-react"
+import { useTheme } from "next-themes"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import { useRef, useState } from "react"
 import { DefaultExtensionType, FileIcon, defaultStyles } from "react-file-icon"
 import { toast } from "sonner"
+
+const Picker = dynamic(() => import("@emoji-mart/react"), {
+  ssr: false,
+  loading: () => <Spinner size='sm' color='primary' />
+})
 
 type Props = {
   roomId: string
@@ -16,6 +24,8 @@ type Props = {
 const ChatArea = ({ roomId }: Props) => {
   const { content, setContent, sendMessage, hasContent, inputRef, isSending, abortResponse, nativeScrollToBottom } =
     useChatContext()
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+  const { theme } = useTheme()
 
   const pickImageRef = useRef<HTMLInputElement | null>(null)
 
@@ -62,6 +72,7 @@ const ChatArea = ({ roomId }: Props) => {
   }
 
   const handleSendMessage = () => {
+    setShowEmojiPicker(false)
     if (!hasContent) return
     if (selectedFile instanceof File) return
     sendMessage({
@@ -76,9 +87,9 @@ const ChatArea = ({ roomId }: Props) => {
   }
 
   return (
-    <div className='fixed inset-x-0 bottom-0 flex flex-col gap-4 border-t-1 border-gray-100 bg-white/50 bg-clip-padding p-4 leading-6 backdrop-blur-lg dark:border-gray-600 dark:bg-slate-700/50 md:px-[5%]'>
+    <div className='flex flex-col gap-4 border-t-1 border-gray-100 bg-white/50 bg-clip-padding p-4 leading-6 backdrop-blur-lg dark:border-gray-600 dark:bg-slate-700/50'>
       {selectedFile && (
-        <div className='relative w-full max-w-3xl self-center'>
+        <div className='relative ml-14 w-full'>
           <div className='relative size-fit'>
             {contentType === EContentType.IMAGE ? (
               <Image
@@ -86,7 +97,7 @@ const ChatArea = ({ roomId }: Props) => {
                 alt=''
                 width={200}
                 height={200}
-                className='size-20 rounded border object-cover'
+                className='size-20 rounded border border-foreground-200 object-cover'
               />
             ) : (
               <div className='flex items-center justify-center gap-4 rounded border border-foreground-200 bg-gray-100 p-4 dark:bg-slate-700/50'>
@@ -130,38 +141,67 @@ const ChatArea = ({ roomId }: Props) => {
           className='hidden'
           onClick={(e: any) => (e.target.value = "")}
         />
-        <div className='relative w-full max-w-3xl'>
-          <Input
-            ref={inputRef}
-            autoFocus
-            placeholder='Thủ tục nhập học, cách lấy thẻ sinh viên,...'
-            radius='full'
-            size='lg'
-            value={content}
-            onValueChange={setContent}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSendMessage()
+        <div className='relative flex w-full gap-4'>
+          <Button radius='full' isIconOnly variant='light' onPress={() => pickImageRef.current?.click()}>
+            <Paperclip size={24} />
+          </Button>
+          <div className='relative flex-1'>
+            <Textarea
+              ref={inputRef}
+              autoFocus
+              placeholder='Thủ tục nhập học, cách lấy thẻ sinh viên,...'
+              radius='sm'
+              size='lg'
+              value={content}
+              onValueChange={setContent}
+              minRows={2}
+              maxRows={6}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault()
+                  handleSendMessage()
+                }
+              }}
+              endContent={
+                <Popover showArrow placement='top-end'>
+                  <PopoverTrigger>
+                    <Button
+                      isIconOnly
+                      variant='light'
+                      size='sm'
+                      radius='full'
+                      onPress={() => setShowEmojiPicker((prev) => !prev)}
+                    >
+                      <Smile size={20} />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className='p-0'>
+                    <Picker
+                      data={data}
+                      locale='vi'
+                      theme={theme}
+                      onEmojiSelect={(e: any) => {
+                        const icon = e.native as string
+                        setContent(content + icon)
+                      }}
+                    />
+                  </PopoverContent>
+                </Popover>
               }
-            }}
-            startContent={
-              <Button size='md' radius='full' isIconOnly variant='light' onPress={() => pickImageRef.current?.click()}>
-                <Paperclip size={24} />
-              </Button>
-            }
-            endContent={
-              <Button
-                size='md'
-                radius='full'
-                isIconOnly
-                variant='light'
-                color={hasContent ? "primary" : "default"}
-                onPress={isSending ? abortResponse : handleSendMessage}
-              >
-                {isSending ? <Pause size={24} /> : <SendHorizonal size={24} />}
-              </Button>
-            }
-          />
+            />
+          </div>
+
+          <Button
+            size='md'
+            radius='full'
+            isIconOnly
+            variant='light'
+            color={hasContent ? "primary" : "default"}
+            onPress={handleSendMessage}
+            isDisabled={isSending || !hasContent}
+          >
+            <SendHorizonal size={24} />
+          </Button>
         </div>
       </div>
     </div>

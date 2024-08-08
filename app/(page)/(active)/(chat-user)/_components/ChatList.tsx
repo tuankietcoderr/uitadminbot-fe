@@ -22,14 +22,14 @@ const ChatList = ({ roomId }: Props) => {
 
   return (
     <div className='flex size-full max-h-full justify-center overflow-auto p-4'>
-      <div className='w-full max-w-3xl space-y-4 pt-40'>
+      <div className='w-full space-y-4 pt-40'>
         {isLoading ? (
           <div className='flex flex-col items-center justify-center gap-2'>
             <Spinner className='m-auto' size='lg' />
             <p>Đang tải dữ liệu...</p>
           </div>
         ) : messages.length > 0 ? (
-          messages.map((message) => <ChatItem key={message._id} message={message} />)
+          messages.map((message) => <ChatItem message={message} key={message._id} />)
         ) : (
           <EmptyRoomMessages />
         )}
