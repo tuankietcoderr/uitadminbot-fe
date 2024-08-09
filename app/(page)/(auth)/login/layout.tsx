@@ -16,7 +16,7 @@ const layout = async ({ children }: PropsWithChildren) => {
     })
     const user = res.data
 
-    if (user.role === ERole.ADMIN) {
+    if (user.role !== ERole.CHAT_USER) {
       redirect(APP_ROUTES.ADMIN.ROOT)
     }
   }

@@ -22,7 +22,10 @@ const ShareListData = () => {
   const fetchNext = useCallback(
     async (page: number) => {
       setIsFetching(true)
-      const res = await shareService.getUserShares(debouncedKeyword, page)
+      const res = await shareService.getUserShares({
+        keyword: debouncedKeyword,
+        page
+      })
       const resData = res.data
       if (resData.success) {
         setShares(resData.data!)

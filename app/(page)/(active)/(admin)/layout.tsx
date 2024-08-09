@@ -21,8 +21,16 @@ const layout = async ({ children }: PropsWithChildren) => {
     redirect(APP_ROUTES.AUTH.LOGIN)
   }
 
-  if (res.data.role !== ERole.ADMIN) {
+  if (res.data.role === ERole.CHAT_USER) {
     redirect(APP_ROUTES.AUTH.LOGIN)
+  }
+
+  if (res.data.isBanned) {
+    return (
+      <div className='flex h-full items-center justify-center p-4 md:p-8'>
+        <h1 className='text-2xl font-semibold'>Tài khoản của bạn đã bị khóa</h1>
+      </div>
+    )
   }
 
   return <div className='h-full overflow-auto p-4 md:p-8'>{children}</div>

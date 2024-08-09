@@ -2,6 +2,7 @@
 import { SendMessageDto, useSendMessageMutation } from "@/_services/message"
 import { useMessageStore } from "@/_store"
 import { CanceledError } from "axios"
+import { usePathname } from "next/navigation"
 import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 
@@ -32,6 +33,7 @@ export const ChatContextProvider = ({ children }: PropsWithChildren) => {
   const [content, setContent] = useState<string>("")
   const { messages, setMessages } = useMessageStore()
   const hasContent = !!content.trim().length
+  const pathname = usePathname()
 
   const abortControllerRef = useRef<AbortController>(new AbortController())
   const fromSendingMessageRef = useRef(true)
@@ -54,6 +56,13 @@ export const ChatContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     scrollToBottom()
   }, [scrollToBottom])
+
+  useEffect(() => {
+    if (!fromSendingMessageRef.current) {
+      fromSendingMessageRef.current = true
+      scrollToBottom()
+    }
+  }, [pathname])
 
   const sendMessage = useCallback(
     (data: SendMessageDto) => {
@@ -80,7 +89,6 @@ export const ChatContextProvider = ({ children }: PropsWithChildren) => {
           setMessages([...prevState, data])
         },
         onError: (err: any) => {
-          console.log(err)
           setMessages(prevState)
           if (err instanceof CanceledError) {
             return

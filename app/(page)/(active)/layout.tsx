@@ -36,7 +36,7 @@ const layout = async ({ children }: PropsWithChildren) => {
           priority
         />
       </div>
-      {user && user.role !== ERole.ADMIN && <ChatUserTopBar />}
+      {user && user.role === ERole.CHAT_USER && <ChatUserTopBar />}
       <div className='flex flex-1 overflow-hidden'>
         <AdminSidebar user={user} />
         <div className='flex-1'>{children}</div>

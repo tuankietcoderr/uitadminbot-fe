@@ -41,13 +41,23 @@ const AssetListData = () => {
   const fetchNext = useCallback(
     async (page: number) => {
       setIsFetching(true)
-      const res = await assetService.getAll(type, debouncedKeyword, page)
-      const resData = res.data
-      if (resData.success) {
-        setAssets(resData.data!)
-        setPaginationRes(resData)
+      try {
+        const res = await assetService.getAll(type, {
+          keyword: debouncedKeyword,
+          page
+        })
+        const resData = res.data
+        if (resData.success) {
+          setAssets(resData.data!)
+          setPaginationRes(resData)
+        }
+      } catch (err: any) {
+        toast.error("Có lỗi xảy ra khi tải dữ liệu", {
+          description: err.response?.data?.message ?? err.message
+        })
+      } finally {
+        setIsFetching(false)
       }
-      setIsFetching(false)
     },
     [debouncedKeyword, type]
   )
@@ -77,7 +87,7 @@ const AssetListData = () => {
 
     toast.loading("Đang tải lên tệp tin", {
       duration: Infinity,
-      description: <Progress value={uploadProgress} className='w-full' showValueLabel />,
+      description: <Progress value={uploadProgress} className='w-full' />,
       classNames: {
         content: "w-full"
       }
@@ -123,7 +133,7 @@ const AssetListData = () => {
           <RenderCellAsset asset={asset} columnKey={columnKey} onDeleteCell={onDeleteCell} />
         )}
         searchKeys={["name"] as AssetColumnKey[]}
-        searchPlaceholder='Tìm kiếm tệp tin'
+        searchPlaceholder={`Tìm kiếm ${isLink ? "liên kết" : "tệp tin"}`}
         onClickCreate={onClickCreate}
         createText={`Tải lên ${isLink ? "liên kết" : "tệp"} mới`}
         showExport={false}

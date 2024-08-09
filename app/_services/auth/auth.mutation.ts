@@ -19,3 +19,12 @@ export const useLoginMutation = () => {
     }
   })
 }
+
+export const useBanAdminMutation = () => {
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const res = await authService.banAdmin(id)
+      return res.data
+    }
+  })
+}

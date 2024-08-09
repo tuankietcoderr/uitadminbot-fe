@@ -27,17 +27,20 @@ const mocks = [
   {
     title: "Bảng điều khiển",
     href: APP_ROUTES.ADMIN.ROOT,
-    icon: ChartColumnIncreasing
+    icon: ChartColumnIncreasing,
+    visibility: [ERole.ADMIN, ERole.SUPER_ADMIN]
   },
   {
     title: "Quản lý dữ liệu",
     href: APP_ROUTES.ADMIN.DATA,
-    icon: Database
+    icon: Database,
+    visibility: [ERole.ADMIN, ERole.SUPER_ADMIN]
   },
   {
     title: "Quản lý chatbot",
     href: APP_ROUTES.ADMIN.CHATBOT,
-    icon: BrainCog
+    icon: BrainCog,
+    visibility: [ERole.SUPER_ADMIN]
   },
   //   {
   //     title: "Quản lý người dùng",
@@ -47,13 +50,14 @@ const mocks = [
   {
     title: "Cài đặt hệ thống",
     href: APP_ROUTES.ADMIN.SETTINGS,
-    icon: Settings
+    icon: Settings,
+    visibility: [ERole.ADMIN, ERole.SUPER_ADMIN]
   }
 ] as {
   title: string
   href: string
   icon: LucideIcon
-  isPublic?: boolean
+  visibility?: ERole[]
 }[]
 
 type Props = {
@@ -63,7 +67,7 @@ type Props = {
 const AdminSidebar = ({ user }: Props) => {
   const pathname = usePathname()
   const [isExpanded, setIsExpanded] = useState(true)
-  const isAdmin = user && user.role === ERole.ADMIN
+  const isAdmin = user && user.role !== ERole.CHAT_USER
   const { messages } = useMessageStore()
 
   const reverseMessages = useMemo(() => [...messages].reverse(), [messages])
@@ -156,7 +160,7 @@ const AdminSidebar = ({ user }: Props) => {
         {mocks.map((mock) => {
           const active = isNavActive(mock.href)
           return (
-            (isAdmin || mock.isPublic) && (
+            mock.visibility?.includes(user?.role!) && (
               <div key={mock.href}>
                 <Link
                   key={mock.href}
@@ -178,8 +182,11 @@ const AdminSidebar = ({ user }: Props) => {
         <div className='flex items-center gap-2 border-t bg-gray-100 p-4 dark:border-gray-700 dark:bg-slate-700/50'>
           {isExpanded && (
             <div className='flex-1'>
-              <p className='font-bold'>
-                {titleize(user.name)} | {titleize(user.role)}
+              <p
+                className='line-clamp-1 font-bold'
+                title={`${titleize(user.name)} | ${titleize(user.role.replace(/_/g, " "))}`}
+              >
+                {titleize(user.name)} | {titleize(user.role.replace(/_/g, " "))}
               </p>
               <p className='text-xs text-foreground-400'>{user.email}</p>
             </div>

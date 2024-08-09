@@ -9,7 +9,9 @@ export const API = {
     ME: "/auth/me",
     VALIDATE: "/auth/validate",
     LOGOUT: "/auth/logout",
-    REFRESH_TOKEN: "/auth/refresh-token"
+    REFRESH_TOKEN: "/auth/refresh-token",
+    GET_ADMINS: "/auth/admin",
+    BAN_ADMIN: (id: string) => `/auth/admin/${id}`
   },
   ROOM: {
     CHAT_USER: {

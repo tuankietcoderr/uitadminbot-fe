@@ -4,6 +4,7 @@ export type User = {
   _id?: string
   role: ERole
   authStrategy: EAuthStrategy
+  createdAt?: string | Date
 }
 
 export type Admin = {
@@ -11,6 +12,7 @@ export type Admin = {
   name: string
   avatar: string | null
   isEmailVerified?: boolean
+  isBanned?: boolean
 } & User
 
 export type ChatUser = {} & User
