@@ -1,4 +1,4 @@
-import { Checkbox, Input, Textarea } from "@nextui-org/react"
+import { Button, Checkbox, Input, Textarea } from "@nextui-org/react"
 import { useState } from "react"
 
 const MaintainSetting = () => {
@@ -22,18 +22,23 @@ const MaintainSetting = () => {
           label='Nội dung thông báo'
         />
       </div>
-      <div className='flex flex-col items-start justify-start gap-2'>
-        <label htmlFor='start-time' className='font-semibold'>
-          Thời gian bắt đầu
-        </label>
-        <Input id='start-time' type='datetime-local' isDisabled={!checked} />
+      <div className='flex gap-4'>
+        <div className='flex flex-1 flex-col items-start justify-start gap-2'>
+          <label htmlFor='start-time' className='font-semibold'>
+            Thời gian bắt đầu
+          </label>
+          <Input id='start-time' type='datetime-local' isDisabled={!checked} />
+        </div>
+        <div className='flex flex-1 flex-col items-start justify-start gap-2'>
+          <label htmlFor='end-time' className='font-semibold'>
+            Thời gian kết thúc
+          </label>
+          <Input id='end-time' type='datetime-local' isDisabled={!checked} />
+        </div>
       </div>
-      <div className='flex flex-col items-start justify-start gap-2'>
-        <label htmlFor='end-time' className='font-semibold'>
-          Thời gian kết thúc
-        </label>
-        <Input id='end-time' type='datetime-local' isDisabled={!checked} />
-      </div>
+      <Button color='primary' variant='solid' disabled={!checked} className=''>
+        Áp dụng
+      </Button>
     </div>
   )
 }

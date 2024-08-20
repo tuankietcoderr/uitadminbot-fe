@@ -1,5 +1,7 @@
 import { APP_ROUTES } from "@/_lib/constants"
+import { useDeleteRoomMutation } from "@/_services/room"
 import { useCreateShareLinkMutation } from "@/_services/share"
+import { useMessageStore } from "@/_store"
 import { Button, cn, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from "@nextui-org/react"
 import { Ellipsis, List, Share2, Trash2 } from "lucide-react"
 import Link from "next/link"
@@ -8,8 +10,9 @@ import { toast } from "sonner"
 
 const ChatActions = () => {
   const createShareLinkMutation = useCreateShareLinkMutation()
-  const isLoading = createShareLinkMutation.isPending
+  const deleteRoomMutation = useDeleteRoomMutation()
   const pathname = usePathname()
+  const { messages } = useMessageStore()
 
   const handleCreateShareLink = () => {
     toast.loading("Đang tạo liên kết chia sẻ", {
@@ -35,6 +38,20 @@ const ChatActions = () => {
     })
   }
 
+  const handleDeleteRoom = () => {
+    deleteRoomMutation.mutate(undefined, {
+      onSuccess: () => {
+        toast.success("Cuộc trò chuyện đã được xoá")
+        location.reload()
+      },
+      onError: (err: any) => {
+        toast.error("Có lỗi xảy ra khi xoá cuộc trò chuyện", {
+          description: err.response?.data?.message ?? err.message
+        })
+      }
+    })
+  }
+
   const isNavActive = (href: string) => {
     if (href === "/" && pathname === "/") return true
     const hrefWithoutQuery = href.split("?")[0]
@@ -49,7 +66,7 @@ const ChatActions = () => {
             <Ellipsis size={20} />
           </Button>
         </DropdownTrigger>
-        <DropdownMenu>
+        <DropdownMenu disabledKeys={messages.length > 0 ? [] : ["advance"]}>
           <DropdownSection title='Hành động' showDivider>
             <DropdownItem
               key={APP_ROUTES.SHARE.ROOT}
@@ -65,7 +82,11 @@ const ChatActions = () => {
             </DropdownItem>
           </DropdownSection>
           <DropdownSection title='Nâng cao'>
-            <DropdownItem startContent={<Trash2 size={16} className='text-danger' />}>
+            <DropdownItem
+              startContent={<Trash2 size={16} className='text-danger' />}
+              onPress={handleDeleteRoom}
+              key='advance'
+            >
               <p className='text-danger'>Xoá cuộc trò chuyện</p>
             </DropdownItem>
           </DropdownSection>

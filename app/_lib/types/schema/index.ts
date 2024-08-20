@@ -1,4 +1,5 @@
 export * from "./Asset"
+export * from "./Integration"
 export * from "./Message"
 export * from "./Room"
 export * from "./Share"

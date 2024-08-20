@@ -7,7 +7,11 @@ import DataSettings from "./DataSettings"
 import MaintainSetting from "./MaintainSetting"
 import SettingItem from "./SettingItem"
 
-const Settings = () => {
+type Props = {
+  isSuperAdmin: boolean
+}
+
+const Settings = ({ isSuperAdmin }: Props) => {
   const { theme } = useTheme()
   const isDark = theme === "dark"
   return (
@@ -29,6 +33,7 @@ const Settings = () => {
         <AccordionItem
           title={<SettingItem title='Cài đặt bảo trì' description='Cài đặt bảo trì hệ thống' icon={Construction} />}
           key={"maintain"}
+          className={isSuperAdmin ? "" : "hidden"}
         >
           <MaintainSetting />
         </AccordionItem>

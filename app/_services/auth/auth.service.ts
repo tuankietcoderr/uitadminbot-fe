@@ -36,5 +36,8 @@ export const authService = {
   },
   banAdmin: async (id: string) => {
     return await apiClient.put<BaseResponse<Admin>>(API.AUTH.BAN_ADMIN(id))
+  },
+  createAdmin: async (data: Pick<Admin, "email" | "name" | "password">) => {
+    return await apiClient.post<BaseResponse<Admin>>(API.AUTH.REGISTER.ADMIN, data)
   }
 }

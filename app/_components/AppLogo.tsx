@@ -10,8 +10,8 @@ type Props = {
 const AppLogo = ({ size = "lg" }: Props) => {
   const sizeMap = {
     sm: 8,
-    md: 14,
-    lg: 20
+    md: 12,
+    lg: 16
   }
 
   return (

@@ -40,7 +40,7 @@ const mocks = [
     title: "Quản lý chatbot",
     href: APP_ROUTES.ADMIN.CHATBOT,
     icon: BrainCog,
-    visibility: [ERole.SUPER_ADMIN]
+    visibility: [ERole.SUPER_ADMIN, ERole.ADMIN]
   },
   //   {
   //     title: "Quản lý người dùng",

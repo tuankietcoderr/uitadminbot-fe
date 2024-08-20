@@ -10,7 +10,7 @@ const layout = async ({ children }: any) => {
     cookies
   })
 
-  if (res.success && res.data.role !== ERole.SUPER_ADMIN) {
+  if (res.success && res.data.role === ERole.CHAT_USER) {
     redirect("/403")
   }
 

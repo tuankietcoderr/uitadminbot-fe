@@ -9,5 +9,8 @@ export const roomService = {
   },
   getRoomMessages: async (roomId: string) => {
     return await apiClient.get<BaseResponse<Message[]>>(API.ROOM.GET_MESSAGES(roomId))
+  },
+  deleteRoom: async () => {
+    return await apiClient.delete<BaseResponse<Room>>(API.ROOM.DELETE)
   }
 }

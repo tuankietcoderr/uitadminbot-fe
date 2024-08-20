@@ -12,5 +12,8 @@ export const QUERY_KEY = {
   SHARE: {
     GET_SHARED_ROOM: "share.getSharedRoom",
     GET_OWNER_SHARES: "share.getOwnerShares"
+  },
+  INTEGRATION: {
+    GET_ALL: "integration.getAll"
   }
 }

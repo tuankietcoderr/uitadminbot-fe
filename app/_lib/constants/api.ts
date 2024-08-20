@@ -17,7 +17,8 @@ export const API = {
     CHAT_USER: {
       GET: "/chat-room/chat-user"
     },
-    GET_MESSAGES: (roomId: string) => `/chat-room/${roomId}`
+    GET_MESSAGES: (roomId: string) => `/chat-room/${roomId}`,
+    DELETE: `/chat-room`
   },
   MESSAGE: {
     SEND: "/message",
@@ -40,5 +41,11 @@ export const API = {
     GET_SHARED_ROOM: (link: string) => `/share/${link}`,
     CANCEL_SHARE: (link: string) => `/share/${link}`,
     GET_USER_SHARES: "/share"
+  },
+  INTEGRATION: {
+    CREATE: "/integration",
+    GET_ALL: "/integration",
+    BAN: (id: string) => `/integration/${id}`,
+    DELETE: (id: string) => `/integration/${id}`
   }
 }

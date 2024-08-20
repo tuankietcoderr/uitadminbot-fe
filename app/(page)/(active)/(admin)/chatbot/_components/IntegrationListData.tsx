@@ -1,23 +1,23 @@
 "use client"
 import { CustomTable, ScreenLoader } from "@/_components"
 import { IPaginate } from "@/_lib/interfaces"
-import { Admin } from "@/_lib/types/schema"
-import { authService } from "@/_services/auth"
+import { Integration } from "@/_lib/types/schema"
+import { integrationService } from "@/_services/integration"
 import { Spinner } from "@nextui-org/react"
 import dynamic from "next/dynamic"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { useDebounce } from "use-debounce"
-import { AccountColumnKey, accountColumns } from "../_mock/accountColumn.mock"
-import RenderCellAccount from "./RenderCellAccount"
+import { IntegrationColumnKey, integrationColumns } from "../_mock/integrationColumn.mock"
+import RenderCellIntegration from "./RenderCellIntegration"
 
-const CreateAccountModal = dynamic(() => import("./CreateAccountModal"), {
+const CreateIntegrationModal = dynamic(() => import("./CreateIntegrationModal"), {
   ssr: false,
   loading: () => <ScreenLoader />
 })
 
-const AccountListData = () => {
-  const [accounts, setAccounts] = useState<Admin[]>([])
+const IntegrationListData = () => {
+  const [integrations, setIntegrations] = useState<Integration[]>([])
   const [paginationRes, setPaginationRes] = useState<IPaginate>({
     page: 1
   })
@@ -31,13 +31,13 @@ const AccountListData = () => {
     async (page: number) => {
       setIsFetching(true)
       try {
-        const res = await authService.getAdmins({
+        const res = await integrationService.getAll({
           keyword: debouncedKeyword,
           page
         })
         const resData = res.data
         if (resData.success) {
-          setAccounts(resData.data!)
+          setIntegrations(resData.data!)
           setPaginationRes(resData)
         }
       } catch (error: any) {
@@ -56,11 +56,11 @@ const AccountListData = () => {
   }
 
   const onDeleteCell = (id: string) => {
-    setAccounts((prev) => prev.filter((item) => item._id !== id))
+    setIntegrations((prev) => prev.filter((item) => item._id !== id))
   }
 
   const onBanCell = (id: string) => {
-    setAccounts((prev) =>
+    setIntegrations((prev) =>
       prev.map((item) => {
         if (item._id === id) {
           return {
@@ -85,23 +85,23 @@ const AccountListData = () => {
     <div className='mt-4'>
       <CustomTable
         showCheckbox={false}
-        dataSource={accounts || []}
-        columns={accountColumns}
+        dataSource={integrations || []}
+        columns={integrationColumns}
         onClickCreate={onClickCreate}
-        RenderCell={(account, columnKey) => (
-          <RenderCellAccount
-            account={account}
+        RenderCell={(integration, columnKey) => (
+          <RenderCellIntegration
+            integration={integration}
             columnKey={columnKey}
             onDeleteCell={onDeleteCell}
             onBanCell={onBanCell}
           />
         )}
-        searchKeys={["email", "name"] as AccountColumnKey[]}
-        searchPlaceholder='Tìm kiếm tài khoản'
+        searchKeys={["email", "name"] as IntegrationColumnKey[]}
+        searchPlaceholder='Tìm kiếm tích hợp'
         showExport={false}
-        createText='Tạo tài khoản'
+        createText='Thêm tích hợp'
         bodyProps={{
-          emptyContent: `Không tìm thấy tài khoản nào`,
+          emptyContent: `Không tìm thấy tích hợp nào`,
           isLoading: isFetching,
           loadingContent: <Spinner />
         }}
@@ -116,7 +116,7 @@ const AccountListData = () => {
         }}
       />
       {showModal && (
-        <CreateAccountModal
+        <CreateIntegrationModal
           visible={showModal}
           onClose={() => {
             setShowModal(false)
@@ -127,4 +127,4 @@ const AccountListData = () => {
     </div>
   )
 }
-export default AccountListData
+export default IntegrationListData

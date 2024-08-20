@@ -11,6 +11,7 @@ export type Admin = {
   email: string
   name: string
   avatar: string | null
+  password?: string
   isEmailVerified?: boolean
   isBanned?: boolean
 } & User
