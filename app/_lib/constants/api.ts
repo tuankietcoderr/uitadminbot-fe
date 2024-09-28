@@ -47,5 +47,10 @@ export const API = {
     GET_ALL: "/integration",
     BAN: (id: string) => `/integration/${id}`,
     DELETE: (id: string) => `/integration/${id}`
+  },
+  SUGGESTION: {
+    GET_ALL: "/suggestion",
+    CREATE: "/suggestion",
+    DELETE: (id: string) => `/suggestion/${id}`
   }
 }

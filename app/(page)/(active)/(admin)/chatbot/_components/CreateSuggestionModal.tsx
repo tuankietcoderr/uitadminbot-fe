@@ -1,5 +1,4 @@
-import { PasswordInput } from "@/_components"
-import { useCreateAdminMutation } from "@/_services/auth"
+import { useCreateSuggestionMutation } from "@/_services/suggestion"
 import { zodResolver } from "@hookform/resolvers/zod"
 import {
   Button,
@@ -11,7 +10,7 @@ import {
   ModalHeader,
   useDisclosure
 } from "@nextui-org/react"
-import { Key, Mail, WholeWord } from "lucide-react"
+import { WholeWord } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
@@ -23,14 +22,12 @@ type ModalContentProps = {
 }
 
 const formSchema = z.object({
-  email: z.string().email("Email không hợp lệ"),
-  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự"),
-  name: z.string().min(1, "Tên không được để trống")
+  question: z.string().min(1, "Vui lòng gợi ý")
 })
 
 type FormSchema = z.infer<typeof formSchema>
 
-const CreateAccountModal = ({ onClose: _onClose, visible, onCreated }: ModalContentProps) => {
+const CreateSuggestionModal = ({ onClose: _onClose, visible, onCreated }: ModalContentProps) => {
   const {
     register,
     handleSubmit,
@@ -38,8 +35,8 @@ const CreateAccountModal = ({ onClose: _onClose, visible, onCreated }: ModalCont
   } = useForm<FormSchema>({
     resolver: zodResolver(formSchema)
   })
-  const createAdminMutation = useCreateAdminMutation()
-  const isUploading = createAdminMutation.isPending
+  const createSuggestionMutation = useCreateSuggestionMutation()
+  const isUploading = createSuggestionMutation.isPending
 
   const { isOpen, onOpenChange } = useDisclosure({
     isOpen: visible,
@@ -47,11 +44,11 @@ const CreateAccountModal = ({ onClose: _onClose, visible, onCreated }: ModalCont
   })
 
   const onSubmit = (data: FormSchema) => {
-    createAdminMutation.mutate(data, {
+    createSuggestionMutation.mutate(data.question, {
       onSuccess: () => {
         _onClose()
         onCreated()
-        toast.success("Thêm tài khoản thành công")
+        toast.success("Thêm gợi ý thành công")
       },
       onError: (error: any) => {
         toast.error("Có lỗi xảy ra", {
@@ -67,34 +64,18 @@ const CreateAccountModal = ({ onClose: _onClose, visible, onCreated }: ModalCont
         {(onClose) => (
           <>
             <ModalHeader>
-              <h2>Thêm tài khoản mới</h2>
+              <h2>Thêm gợi ý mới</h2>
             </ModalHeader>
             <form onSubmit={handleSubmit(onSubmit)}>
               <ModalBody>
                 <Input
-                  {...register("name")}
-                  isInvalid={!!errors.name}
-                  errorMessage={errors.name?.message}
-                  placeholder='Nhập tên admin'
+                  {...register("question")}
+                  isInvalid={!!errors.question}
+                  errorMessage={errors.question?.message}
+                  placeholder='Nhập gợi ý'
                   startContent={<WholeWord size={20} />}
                   isDisabled={isUploading}
                   autoFocus
-                />
-                <Input
-                  {...register("email")}
-                  isInvalid={!!errors.email}
-                  errorMessage={errors.email?.message}
-                  placeholder='Nhập email admin'
-                  startContent={<Mail size={20} />}
-                  isDisabled={isUploading}
-                />
-                <PasswordInput
-                  {...register("password")}
-                  isInvalid={!!errors.password}
-                  errorMessage={errors.password?.message}
-                  placeholder='Nhập mật khẩu'
-                  startContent={<Key size={20} />}
-                  isDisabled={isUploading}
                 />
               </ModalBody>
               <ModalFooter>
@@ -113,4 +94,4 @@ const CreateAccountModal = ({ onClose: _onClose, visible, onCreated }: ModalCont
   )
 }
 
-export default CreateAccountModal
+export default CreateSuggestionModal

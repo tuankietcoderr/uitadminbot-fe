@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/no-custom-classname */
 import { EContentType } from "@/_lib/enums"
 import { Message, MessageContent } from "@/_lib/types/schema"
 import { formatDate } from "@/_lib/utils"
@@ -116,13 +117,20 @@ const Answer = ({
   }
 
   return (
-    <div className='flex w-full max-w-[60rem] gap-4'>
+    <div className='flex w-fit min-w-20 max-w-[60rem] gap-4'>
       <div className='size-10 rounded-full border bg-white p-1 dark:border-gray-700'>
         <Image src={"/logo.png"} width={40} height={40} alt='' className='object-contain' />
       </div>
       <div className='mr-12 flex flex-1 flex-col gap-4 rounded-lg bg-gray-100 p-4 dark:bg-slate-700/50'>
-        <div className='prose max-w-none dark:prose-invert'>
-          <Markdown>{content}</Markdown>
+        <div className='prose max-w-none dark:prose-invert prose-a:font-bold prose-a:text-primary'>
+          <Markdown
+            components={{
+              //@ts-ignore
+              a: ({ node, ...props }) => <Link {...props} showAnchorIcon target='_blank' underline='always' />
+            }}
+          >
+            {content}
+          </Markdown>
         </div>
         {canShowActions && <Divider />}
         {canShowActions && (

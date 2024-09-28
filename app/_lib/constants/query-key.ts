@@ -15,5 +15,8 @@ export const QUERY_KEY = {
   },
   INTEGRATION: {
     GET_ALL: "integration.getAll"
+  },
+  SUGGESTION: {
+    GET_ALL: "suggestion.getAll"
   }
 }

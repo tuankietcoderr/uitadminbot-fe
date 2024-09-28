@@ -1,7 +1,8 @@
 import { useChatContext } from "@/_context"
+import { useGetAllSuggestionsQuery } from "@/_services/suggestion"
 import { Chip } from "@nextui-org/react"
 
-const questions = [
+const _questions = [
   "Cách lấy thẻ sinh viên",
   "Thủ tục nhập học",
   "Học phí",
@@ -18,8 +19,13 @@ const questions = [
   "Thông tin liên hệ"
 ]
 
-const EmptyRoomMessages = () => {
+const EmptyRoomMessages = ({ hasError = false }: { hasError?: boolean }) => {
   const { content, setContent, inputRef } = useChatContext()
+  const getAllSuggestionQuery = useGetAllSuggestionsQuery(!hasError)
+
+  const questions = hasError ? _questions : getAllSuggestionQuery.data?.data || []
+  const isLoading = getAllSuggestionQuery.isLoading
+  const isError = !getAllSuggestionQuery.data?.success
 
   const onChooseContent = (content: string) => {
     setContent(content)
@@ -29,8 +35,13 @@ const EmptyRoomMessages = () => {
   return (
     <div className='space-y-4'>
       <h1 className='text-2xl font-bold'>Các câu hỏi gợi ý</h1>
+      {/* {isLoading ? (
+        <Spinner size='lg' />
+      ) : isError ? (
+        <EmptyRoomMessages hasError />
+      ) : ( */}
       <div className='flex flex-wrap gap-2'>
-        {questions.map((question, index) => (
+        {_questions.map((question, index) => (
           <Chip
             size='lg'
             key={index}
@@ -43,6 +54,7 @@ const EmptyRoomMessages = () => {
           </Chip>
         ))}
       </div>
+      {/* )} */}
     </div>
   )
 }
