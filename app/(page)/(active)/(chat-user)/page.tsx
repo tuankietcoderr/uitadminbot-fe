@@ -11,7 +11,7 @@ import ChatList from "./_components/ChatList"
 
 const page = () => {
   const createChatUserMutation = useCreateChatUserMutation()
-  const { isLoading, isError, isSuccess } = useGetMeQuery()
+  const { isLoading, isError, isSuccess, data } = useGetMeQuery()
   const getUserChatRoomQuery = useGetChatUserRoomQuery(isSuccess)
 
   useEffect(() => {
@@ -29,6 +29,7 @@ const page = () => {
             expires: timezoneDate(data.refreshTokenExpiration),
             secure: process.env.NODE_ENV === "production"
           })
+
           location.reload()
         },
         onError: () => {
@@ -36,7 +37,9 @@ const page = () => {
         }
       })
     }
-    return () => {}
+    return () => {
+      createChatUserMutation.reset()
+    }
   }, [isError, isLoading])
 
   const room = getUserChatRoomQuery.data?.data

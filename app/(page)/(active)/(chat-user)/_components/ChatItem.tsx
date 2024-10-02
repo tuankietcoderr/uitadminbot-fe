@@ -25,7 +25,14 @@ const ChatItem = ({ message, canShowActions = true }: Props) => {
     <div className='flex flex-col gap-4' id={message._id}>
       <Question {...question} sentAt={formatDate(message.createdAt!, "LLLL")} />
       {hasAnswer ? (
-        <Answer {...answer} canShowActions={canShowActions} _id={_id!} isLiked={!!isLiked} isDisliked={!!isDisliked} />
+        <Answer
+          {...answer}
+          canShowActions={canShowActions}
+          _id={_id!}
+          isLiked={!!isLiked}
+          isDisliked={!!isDisliked}
+          responseTime={message.responseTime!}
+        />
       ) : (
         <Generating />
       )}
@@ -78,12 +85,14 @@ const Answer = ({
   isDisliked,
   isLiked,
   _id,
-  canShowActions
+  canShowActions,
+  responseTime
 }: MessageContent & {
   isLiked: boolean
   isDisliked: boolean
   _id: string
   canShowActions: boolean
+  responseTime: number
 }) => {
   const { likeMessage, dislikeMessage } = useMessageStore()
   const likeMessageMutation = useLikeMessageMutation()
@@ -122,6 +131,11 @@ const Answer = ({
         <Image src={"/logo.png"} width={40} height={40} alt='' className='object-contain' />
       </div>
       <div className='mr-12 flex flex-1 flex-col gap-4 rounded-lg bg-gray-100 p-4 dark:bg-slate-700/50'>
+        {responseTime > 0 && (
+          <p className='text-xs text-slate-500'>
+            Đã trả lời trong <b>{responseTime / 1000}</b> s
+          </p>
+        )}
         <div className='prose max-w-none dark:prose-invert prose-a:font-bold prose-a:text-primary'>
           <Markdown
             components={{

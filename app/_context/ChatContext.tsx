@@ -62,13 +62,12 @@ export const ChatContextProvider = ({ children }: PropsWithChildren) => {
       fromSendingMessageRef.current = true
       scrollToBottom()
     }
-  }, [pathname])
+  }, [pathname, scrollToBottom])
 
   const sendMessage = useCallback(
     (data: SendMessageDto) => {
       if (!hasContent) return
       if (isSending) return
-
       setContent("")
       fromSendingMessageRef.current = true
 

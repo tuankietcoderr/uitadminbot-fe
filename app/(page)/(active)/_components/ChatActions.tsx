@@ -66,7 +66,7 @@ const ChatActions = () => {
             <Ellipsis size={20} />
           </Button>
         </DropdownTrigger>
-        <DropdownMenu disabledKeys={messages.length > 0 ? [] : ["advance"]}>
+        <DropdownMenu disabledKeys={messages.length > 0 ? [] : ["advance", "share"]}>
           <DropdownSection title='Hành động' showDivider>
             <DropdownItem
               key={APP_ROUTES.SHARE.ROOT}
@@ -77,7 +77,7 @@ const ChatActions = () => {
             >
               <p>Các cuộc trò chuyện đã chia sẻ</p>
             </DropdownItem>
-            <DropdownItem startContent={<Share2 size={16} />} onPress={handleCreateShareLink}>
+            <DropdownItem startContent={<Share2 size={16} />} onPress={handleCreateShareLink} key={"share"}>
               <p>Chia sẻ cuộc trò chuyện</p>
             </DropdownItem>
           </DropdownSection>

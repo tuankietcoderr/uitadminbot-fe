@@ -8,6 +8,7 @@ export type Message = {
   room?: string | Room
   isLiked?: boolean
   isDisliked?: boolean
+  responseTime?: number
   session?: string
   createdAt?: Date | string
 }

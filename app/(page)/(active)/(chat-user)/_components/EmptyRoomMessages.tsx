@@ -1,5 +1,4 @@
 import { useChatContext } from "@/_context"
-import { useGetAllSuggestionsQuery } from "@/_services/suggestion"
 import { Chip } from "@nextui-org/react"
 
 const _questions = [
@@ -21,11 +20,11 @@ const _questions = [
 
 const EmptyRoomMessages = ({ hasError = false }: { hasError?: boolean }) => {
   const { content, setContent, inputRef } = useChatContext()
-  const getAllSuggestionQuery = useGetAllSuggestionsQuery(!hasError)
+  // const getAllSuggestionQuery = useGetAllSuggestionsQuery(!hasError)
 
-  const questions = hasError ? _questions : getAllSuggestionQuery.data?.data || []
-  const isLoading = getAllSuggestionQuery.isLoading
-  const isError = !getAllSuggestionQuery.data?.success
+  // const questions = hasError ? _questions : getAllSuggestionQuery.data?.data || []
+  // const isLoading = getAllSuggestionQuery.isLoading
+  // const isError = !getAllSuggestionQuery.data?.success
 
   const onChooseContent = (content: string) => {
     setContent(content)
