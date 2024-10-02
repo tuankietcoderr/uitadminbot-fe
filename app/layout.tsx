@@ -1,3 +1,4 @@
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google"
 import type { Metadata, ResolvingMetadata } from "next"
 import { Nunito } from "next/font/google"
 import { default as meta } from "../public/meta.json"
@@ -16,6 +17,9 @@ export async function generateMetadata({ params, searchParams }: any, parent: Re
     metadataBase: new URL(ENV_CONFIG.PRODUCTION_URL),
     openGraph: {
       images: ["/og_bg.jpg", ...previousImages]
+    },
+    other: {
+      "google-site-verification": "AcpMyhzPqPc6Atgg6qGqh9eIoLm6xp1JpHIdsbi-nz0"
     }
   }
 }
@@ -30,6 +34,8 @@ export default function RootLayout({
       <body className={`${nunito.className}`}>
         <Providers>{children}</Providers>
       </body>
+      <GoogleAnalytics gaId='G-DR4H3ZREH2' />
+      <GoogleTagManager gtmId='GTM-THC8GCNN' />
     </html>
   )
 }
