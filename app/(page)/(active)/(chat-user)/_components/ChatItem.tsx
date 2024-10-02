@@ -4,6 +4,7 @@ import { Message, MessageContent } from "@/_lib/types/schema"
 import { formatDate } from "@/_lib/utils"
 import { useDislikeMessageMutation, useLikeMessageMutation } from "@/_services/message"
 import { useMessageStore } from "@/_store"
+import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google"
 import { Avatar, Button, Divider, Link } from "@nextui-org/react"
 import { ThumbsDown, ThumbsUp } from "lucide-react"
 import Image from "next/image"
@@ -100,6 +101,13 @@ const Answer = ({
 
   const handleLikeMessage = () => {
     likeMessage(_id, !isLiked)
+    sendGTMEvent({
+      event: "message_like",
+      value: isLiked ? "unlike" : "like"
+    })
+    sendGAEvent("event", "message_like", {
+      value: isLiked ? "unlike" : "like"
+    })
     likeMessageMutation.mutate(_id, {
       onSuccess: ({ data }) => {
         console.log("liked")
@@ -113,6 +121,13 @@ const Answer = ({
   }
   const handleDislikeMessage = () => {
     dislikeMessage(_id, !isDisliked)
+    sendGTMEvent({
+      event: "message_dislike",
+      value: isLiked ? "undislike" : "dislike"
+    })
+    sendGAEvent("event", "message_dislike", {
+      value: isLiked ? "undislike" : "dislike"
+    })
     dislikeMessageMutation.mutate(_id, {
       onSuccess: ({ data }) => {
         console.log("disliked")
@@ -133,14 +148,14 @@ const Answer = ({
       <div className='mr-12 flex flex-1 flex-col gap-4 rounded-lg bg-gray-100 p-4 dark:bg-slate-700/50'>
         {responseTime > 0 && (
           <p className='text-xs text-slate-500'>
-            Đã trả lời trong <b>{responseTime / 1000}</b> s
+            Đã trả lời trong <b>{responseTime / 1000}</b> giây
           </p>
         )}
         <div className='prose max-w-none dark:prose-invert prose-a:font-bold prose-a:text-primary'>
           <Markdown
             components={{
               //@ts-ignore
-              a: ({ node, ...props }) => <Link {...props} showAnchorIcon target='_blank' underline='always' />
+              a: ({ node, ...props }) => <Link {...props} showAnchorIcon isExternal underline='always' />
             }}
           >
             {content}

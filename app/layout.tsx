@@ -31,11 +31,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='vi' suppressHydrationWarning>
+      <GoogleAnalytics gaId='G-DR4H3ZREH2' />
+      <GoogleTagManager gtmId='GTM-THC8GCNN' />
       <body className={`${nunito.className}`}>
         <Providers>{children}</Providers>
       </body>
-      <GoogleAnalytics gaId='G-DR4H3ZREH2' />
-      <GoogleTagManager gtmId='GTM-THC8GCNN' />
     </html>
   )
 }

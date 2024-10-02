@@ -3,6 +3,7 @@ import { EContentType } from "@/_lib/enums"
 import { useDeleteUploadMutation, useUploadMutation } from "@/_services/upload"
 import { UploadResponseDto } from "@/_services/upload/upload.dto"
 import data from "@emoji-mart/data"
+import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google"
 import { Button, CircularProgress, Popover, PopoverContent, PopoverTrigger, Spinner, Textarea } from "@nextui-org/react"
 import { Paperclip, SendHorizonal, Smile, X } from "lucide-react"
 import { useTheme } from "next-themes"
@@ -73,6 +74,13 @@ const ChatArea = ({ roomId }: Props) => {
 
   const handleSendMessage = () => {
     setShowEmojiPicker(false)
+    sendGTMEvent({
+      event: "send_message",
+      value: content
+    })
+    sendGAEvent("event", "send_message", {
+      value: content
+    })
     if (!hasContent) return
     if (selectedFile instanceof File) return
     sendMessage({
