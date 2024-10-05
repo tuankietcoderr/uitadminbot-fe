@@ -9,6 +9,7 @@ import { Avatar, Button, Divider, Link } from "@nextui-org/react"
 import { ThumbsDown, ThumbsUp } from "lucide-react"
 import Image from "next/image"
 import Markdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import { toast } from "sonner"
 import Generating from "./Generating"
 
@@ -153,9 +154,11 @@ const Answer = ({
         )}
         <div className='prose max-w-none dark:prose-invert prose-a:font-bold prose-a:text-primary'>
           <Markdown
+            remarkPlugins={[remarkGfm]}
             components={{
               //@ts-ignore
-              a: ({ node, ...props }) => <Link {...props} showAnchorIcon isExternal underline='always' />
+              a: ({ node, ...props }) => <Link {...props} showAnchorIcon isExternal underline='always' />,
+              table: ({ node, ...props }) => <table {...props} className='table-auto text-center' />
             }}
           >
             {content}
