@@ -148,7 +148,7 @@ const Answer = ({
       </div>
       <div className='mr-12 flex flex-1 flex-col gap-4 rounded-lg bg-gray-100 p-4 dark:bg-slate-700/50'>
         {responseTime > 0 && (
-          <p className='text-xs text-slate-500'>
+          <p className='pointer-events-none select-none text-xs text-slate-500'>
             Đã trả lời trong <b>{responseTime / 1000}</b> giây
           </p>
         )}
