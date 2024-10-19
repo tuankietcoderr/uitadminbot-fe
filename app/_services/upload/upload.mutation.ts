@@ -12,7 +12,8 @@ export const useUploadMutation = (setUploadProgress?: (p: number) => void, isAdm
       const res = await handler(formData, setUploadProgress)
 
       return res.data
-    }
+    },
+    retry: 1
   })
 }
 
@@ -21,7 +22,8 @@ export const useUpLinkMutation = () => {
     mutationFn: async (url: string) => {
       const res = await uploadService.uploadLink(url)
       return res.data
-    }
+    },
+    retry: 1
   })
 }
 
@@ -30,7 +32,8 @@ export const useDeleteLinkMutation = () => {
     mutationFn: async (public_id: string) => {
       const res = await uploadService.deleteLink(public_id)
       return res.data
-    }
+    },
+    retry: 1
   })
 }
 
@@ -40,6 +43,7 @@ export const useDeleteUploadMutation = (isAdmin: boolean = false) => {
       const handler = isAdmin ? uploadService.adminDelete : uploadService.delete
       const res = await handler(fileId)
       return res.data
-    }
+    },
+    retry: 1
   })
 }

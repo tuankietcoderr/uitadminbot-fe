@@ -6,7 +6,7 @@ import Cookies from "js-cookie"
 const apiClient = axios.create({
   baseURL: ENV_CONFIG.BE_URL,
   withCredentials: true,
-  timeout: 90000 // 90s
+  timeout: 120000 // 2 minutes
 })
 
 apiClient.interceptors.request.use((config) => {
