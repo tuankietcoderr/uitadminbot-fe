@@ -149,7 +149,7 @@ const Answer = ({
       <div className='mr-12 flex flex-1 flex-col gap-4 rounded-lg bg-gray-100 p-4 dark:bg-slate-700/50'>
         {responseTime > 0 && (
           <p className='pointer-events-none select-none text-xs text-slate-500'>
-            Đã trả lời trong <b>{responseTime / 1000}</b> giây
+            Đã trả lời trong <b>{(responseTime / 1000).toFixed(4)}</b> giây
           </p>
         )}
         <div className='prose max-w-none dark:prose-invert prose-a:font-bold prose-a:text-primary'>
