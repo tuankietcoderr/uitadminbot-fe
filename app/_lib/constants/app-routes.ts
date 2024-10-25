@@ -2,7 +2,7 @@ export const APP_ROUTES = {
   ROOT: "/",
   ADMIN: {
     ROOT: "/dashboard",
-    DATA: "/data?selected_tab=pdf",
+    DATA: "/data?selected_tab=link",
     CHATBOT: "/chatbot",
     USERS: "/users",
     SETTINGS: "/settings"

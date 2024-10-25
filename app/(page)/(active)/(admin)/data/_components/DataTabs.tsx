@@ -6,21 +6,21 @@ import { useEffect, useState } from "react"
 
 const tabs = [
   {
+    title: "Liên kết",
+    _key: "link"
+  },
+  {
     title: "Tài liệu PDF",
     _key: "pdf"
   },
   {
     title: "Tài liệu Excel",
     _key: "excel"
-  },
+  }
   // {
   //   title: "Hình ảnh",
   //   _key: "image"
   // },
-  {
-    title: "Liên kết",
-    _key: "link"
-  }
 ] as {
   title: string
   _key: string

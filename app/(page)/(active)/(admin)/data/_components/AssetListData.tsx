@@ -27,7 +27,7 @@ const AssetListData = () => {
   const pickFileRef = useRef<HTMLInputElement | null>(null)
 
   const searchParams = useSearchParams()
-  const type = searchParams.get("selected_tab") || "pdf"
+  const type = searchParams.get("selected_tab") || "link"
   const isLink = type === "link"
   const [isFetching, setIsFetching] = useState(false)
   const [keyword, setKeyword] = useState("")

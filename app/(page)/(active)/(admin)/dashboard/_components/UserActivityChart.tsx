@@ -3,46 +3,52 @@ import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YA
 
 const data = [
   {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400
+    name: "Tháng 1",
+    NoAU: 2400
   },
   {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210
+    name: "Tháng 2",
+    NoAU: 1398
   },
   {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290
+    name: "Tháng 3",
+    NoAU: 9800
   },
   {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000
+    name: "Tháng 4",
+    NoAU: 3908
   },
   {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181
+    name: "Tháng 5",
+    NoAU: 4800
   },
   {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500
+    name: "Tháng 6",
+    NoAU: 3800
   },
   {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100
+    name: "Tháng 7",
+    NoAU: 4100
+  },
+  {
+    name: "Tháng 8",
+    NoAU: 6123
+  },
+  {
+    name: "Tháng 9",
+    NoAU: 4200
+  },
+  {
+    name: "Tháng 10",
+    NoAU: 500
+  },
+  {
+    name: "Tháng 11",
+    NoAU: 240
+  },
+  {
+    name: "Tháng 12",
+    NoAU: 300
   }
 ]
 
@@ -67,7 +73,7 @@ const UserActivityChart = () => {
           <YAxis />
           <Tooltip />
           {/* <Area type='monotone' dataKey='uv' stroke='#8884d8' fill='#8884d8' /> */}
-          <Line type='monotone' dataKey='pv' stroke='#82ca9d' />
+          <Line type='monotone' dataKey='NoAU' stroke='#82ca9d' />
         </LineChart>
       </ResponsiveContainer>
     </div>
