@@ -12,6 +12,7 @@ import Image from "next/image"
 import { useRef, useState } from "react"
 import { DefaultExtensionType, FileIcon, defaultStyles } from "react-file-icon"
 import { toast } from "sonner"
+import Dictaphone from "./Dictaphone"
 
 const Picker = dynamic(() => import("@emoji-mart/react"), {
   ssr: false,
@@ -27,12 +28,12 @@ const ChatArea = ({ roomId }: Props) => {
     useChatContext()
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const { theme } = useTheme()
-
   const pickImageRef = useRef<HTMLInputElement | null>(null)
 
   const [selectedFile, setSelectedFile] = useState<File | UploadResponseDto | null>(null)
   const [contentType, setContentType] = useState<EContentType>(EContentType.TEXT)
   const [uploadProgress, setUploadProgress] = useState<number>(0)
+  const [isListening, setIsListening] = useState(false)
 
   const uploadMutation = useUploadMutation(setUploadProgress)
   const deleteUploadMutation = useDeleteUploadMutation()
@@ -70,6 +71,10 @@ const ChatArea = ({ roomId }: Props) => {
     setContentType(EContentType.TEXT)
     const file = selectedFile as UploadResponseDto
     deleteUploadMutation.mutate(file.publicId, {})
+  }
+
+  const handleSpeech = (result: string) => {
+    setContent(result)
   }
 
   const handleSendMessage = () => {
@@ -153,7 +158,9 @@ const ChatArea = ({ roomId }: Props) => {
           <Button radius='full' isIconOnly variant='light' onPress={() => pickImageRef.current?.click()}>
             <Paperclip size={24} />
           </Button>
+          <Dictaphone onSpeech={handleSpeech} onListeningChange={setIsListening} />
           <div className='relative flex-1'>
+            {isListening && <div className='absolute inset-0 z-[2] rounded bg-white/40' />}
             <Textarea
               ref={inputRef}
               autoFocus

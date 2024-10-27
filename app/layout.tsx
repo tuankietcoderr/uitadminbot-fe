@@ -1,6 +1,7 @@
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google"
 import type { Metadata, ResolvingMetadata } from "next"
 import { Nunito } from "next/font/google"
+
 import { default as meta } from "../public/meta.json"
 import { ENV_CONFIG } from "./_lib/constants"
 import "./globals.css"

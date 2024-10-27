@@ -1,4 +1,5 @@
 /* eslint-disable tailwindcss/no-custom-classname */
+import useTextToSpeech from "@/_hooks/useTextToSpeech"
 import { EContentType } from "@/_lib/enums"
 import { Message, MessageContent } from "@/_lib/types/schema"
 import { formatDate } from "@/_lib/utils"
@@ -6,8 +7,9 @@ import { useDislikeMessageMutation, useLikeMessageMutation } from "@/_services/m
 import { useMessageStore } from "@/_store"
 import { sendGAEvent, sendGTMEvent } from "@next/third-parties/google"
 import { Avatar, Button, Divider, Link } from "@nextui-org/react"
-import { ThumbsDown, ThumbsUp } from "lucide-react"
+import { CircleStop, Copy, CopyCheck, ThumbsDown, ThumbsUp, Volume2 } from "lucide-react"
 import Image from "next/image"
+import { useState } from "react"
 import Markdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { toast } from "sonner"
@@ -99,7 +101,11 @@ const Answer = ({
   const { likeMessage, dislikeMessage } = useMessageStore()
   const likeMessageMutation = useLikeMessageMutation()
   const dislikeMessageMutation = useDislikeMessageMutation()
-
+  const { isSpeaking, startSpeech, stopSpeech } = useTextToSpeech({
+    text: content,
+    lang: "vi-VN"
+  })
+  const [isCopied, setIsCopied] = useState(false)
   const handleLikeMessage = () => {
     likeMessage(_id, !isLiked)
     sendGTMEvent({
@@ -139,6 +145,14 @@ const Answer = ({
         })
       }
     })
+  }
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(content)
+    setIsCopied(true)
+    setTimeout(() => {
+      setIsCopied(false)
+    }, 3000)
   }
 
   return (
@@ -190,9 +204,17 @@ const Answer = ({
                 </Button>
               </div>
             </div>
-            <Button variant='bordered' size='sm'>
+            {/* <Button variant='bordered' size='sm'>
               Phản hồi
-            </Button>
+            </Button> */}
+            <div>
+              <Button size='sm' variant='light' onPress={isSpeaking ? stopSpeech : startSpeech} isIconOnly>
+                {isSpeaking ? <CircleStop size={16} className='text-primary' /> : <Volume2 size={16} />}
+              </Button>
+              <Button size='sm' variant='light' onPress={handleCopy} isIconOnly>
+                {isCopied ? <CopyCheck size={16} className='text-success' /> : <Copy size={16} />}
+              </Button>
+            </div>
           </div>
         )}
       </div>
