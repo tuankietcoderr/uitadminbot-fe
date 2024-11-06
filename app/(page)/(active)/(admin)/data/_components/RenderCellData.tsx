@@ -21,7 +21,7 @@ const RenderCellAsset = ({ asset, columnKey, onDeleteCell }: Props) => {
 
   const isLink = asset.assetType === "link"
 
-  const deleteAssetMutation = isLink ? useDeleteUploadMutation(true) : useDeleteLinkMutation()
+  const deleteAssetMutation = !isLink ? useDeleteUploadMutation(true) : useDeleteLinkMutation()
   const isLoading = deleteAssetMutation.isPending
 
   const handleDelete = () => {
