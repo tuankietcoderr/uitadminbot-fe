@@ -201,7 +201,7 @@ const AdminSidebar = ({ user }: Props) => {
           <AppLogo size='md' />
         </div>
       )}
-      {isExpanded && <p className='py-2 text-center text-xs text-foreground-400'>© 2024 bởi DPS2K</p>}
+      {/* {isExpanded && <p className='py-2 text-center text-xs text-foreground-400'>© 2024 bởi DPS2K</p>} */}
     </motion.div>
   )
 }
